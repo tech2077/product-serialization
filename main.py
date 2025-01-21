@@ -70,5 +70,9 @@ if __name__ == "__main__":
             print(f"  {'batch size:':<15}{batch_size:>4}")
             print(f"  {'batch index:':<15}{batch_index:>4}")
             print(f"  {'batch id:':<15}{batch_id:>4}")
-    elif batch_id is not None and batch_index is not None and batch_id is not None:
-            print(f"item serial:  {item_serializer(batch_size, batch_index, batch_id).decode()}")
+    elif batch_id is not None and batch_id is not None:
+            if batch_index is not None:
+                print(f"item serial:  {item_serializer(batch_size, batch_index, batch_id).decode()}")
+            else:
+                for i in range(1, batch_size + 1):
+                    print(f"item {i:<3} serial:  {item_serializer(batch_size, i, batch_id).decode()}")
