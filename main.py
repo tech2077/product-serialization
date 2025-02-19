@@ -38,7 +38,7 @@ def item_deserializer(serial: str) -> tuple[int, int, int, int]:
     """get information for item from serial
 
     Args:
-        serial (bytes | str): item serial string
+        serial (str): item serial string
 
     Raises:
         Exception: unable to decode serial
