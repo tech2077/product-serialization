@@ -32,7 +32,9 @@ def item_serializer(product_id: int, batch_size: int, batch_index: int, batch_id
     
     raw_info = struct.pack("BBBB", product_id, batch_size, batch_index, batch_id)
 
-    return safe32_encode(raw_info)
+    truncated_serial = safe32_encode(raw_info)[1:]
+
+    return truncated_serial
 
 def item_deserializer(serial: str) -> tuple[int, int, int, int]:
     """get information for item from serial
@@ -50,7 +52,7 @@ def item_deserializer(serial: str) -> tuple[int, int, int, int]:
     if len(serial) != 6:
         raise Exception("serial of wrong length, must be 6 characters")
     else:
-        serial = b'0' + bytes(serial, 'utf-8')
+        serial = b'0' + serial.encode()
     
     raw_info = safe32_decode(serial)
     product_id, batch_size, batch_index, batch_id = struct.unpack("BBBB", raw_info)
@@ -84,7 +86,7 @@ if __name__ == "__main__":
             print(f"  {'batch id:':<15}{batch_id:>4}")
     elif product_id is not None and batch_size is not None and batch_id is not None:
             if batch_index is not None:
-                print(f"item serial:  {item_serializer(product_id, batch_size, batch_index, batch_id).decode()[1:]}")
+                print(f"item serial:  {item_serializer(product_id, batch_size, batch_index, batch_id).decode()}")
             else:
                 for i in range(1, batch_size + 1):
-                    print(f"item {i:<3} serial:  {item_serializer(product_id, batch_size, i, batch_id).decode()[1:]}")
+                    print(f"item {i:<3} serial:  {item_serializer(product_id, batch_size, i, batch_id).decode()}")
